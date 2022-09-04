@@ -1,0 +1,29 @@
+---
+- name: configure docker community repository (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    gpgcheck: yes
+    state: present
+    gpgkey: "https://download.docker.com/linux/centos/gpg"
+    baseurl: "https://download.docker.com/linux/centos/$releasever/$basearch/stable"
+    file: docker-ce-stable.repo
+    priority: 2
+  register: result
+  until: result is succeeded
+
+- name: configure kubernetes repository (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes
+    gpgcheck: yes
+    state: present
+    gpgkey: "https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg"
+    baseurl: "https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch"
+    file: kubernetes.repo
+    exclude: "kubelet kubeadm kubectl"
+  register: result
+  until: result is succeeded
+

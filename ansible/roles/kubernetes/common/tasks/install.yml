@@ -1,0 +1,34 @@
+---
+- name: install containerd engine (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  yum:
+    name:
+      - containerd.io
+    state: present
+    update_cache: yes
+  register: result
+  until: result is succeeded
+
+- name: install kubernetes packages (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  yum:
+    name:
+      - "kubelet-{{ kubernetes_version }}"
+      - "kubectl-{{ kubernetes_version }}"
+      - "kubeadm-{{ kubernetes_version }}"
+    state: present
+    update_cache: yes
+    disable_excludes: "kubernetes"
+  register: result
+  until: result is succeeded
+
+- name: install prerequisite packages (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  yum:
+    name:
+      - iproute-tc
+    state: present
+    update_cache: yes
+  register: result
+  until: result is succeeded
+

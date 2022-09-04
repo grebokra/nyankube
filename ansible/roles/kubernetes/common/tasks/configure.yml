@@ -1,0 +1,26 @@
+---
+- name: place configuration files (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  block:
+    - name: place containerd configuration file
+      template:
+        src: containerd_config.toml.j2
+        dest: /etc/containerd/config.toml
+
+- name: place sysctl configuration (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  template:
+    src: sysctl.conf.j2
+    dest: /etc/sysctl.d/90-kube.conf
+  notify: load sysctl system variables
+
+- name: place modprobe configuration (rhel)
+  when: ansible_facts['os_family'] == 'RedHat'
+  template:
+    src: modules.conf.j2
+    dest: /etc/modules-load.d/kube.conf
+  notify: reboot
+
+- name: Flush handlers
+  meta: flush_handlers
+

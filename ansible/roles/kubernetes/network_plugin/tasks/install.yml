@@ -1,0 +1,15 @@
+---
+- name: install flannel
+  block:
+    - name: create /opt/bin
+      file:
+        path: /opt/bin
+        state: directory
+    - name: download flannel binary
+      get_url:
+        url: "{{ flannel_download_url }}"
+        dest: "/opt/bin/flanneld"
+        mode: "0700"
+      register: result
+      until: result is succeeded
+

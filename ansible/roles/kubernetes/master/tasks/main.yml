@@ -1,0 +1,29 @@
+---
+- name: init new cluster on 0th master
+  delegate_to: "{{ groups['k8s_masters'][0] }}"
+  run_once: true
+  shell:
+    cmd: "kubeadm init --pod-network-cidr={{ pod_network_cidr }}"
+
+- name: get join command
+  delegate_to: "{{ groups['k8s_masters'][0] }}"
+  run_once: true
+  shell:
+    cmd: "kubeadm token create $(kubeadm token generate) --print-join-command"
+  register: get_join_command
+
+- name: set node join command as fact
+  set_fact:
+    k8s_join_command: "{{ get_join_command.stdout }}"
+
+- name: create ~/.kube directory
+  file:
+    path: /root/.kube
+    state: directory
+
+- name: copy admin.conf
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/config
+    remote_src: yes
+

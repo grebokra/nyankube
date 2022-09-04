@@ -1,0 +1,3 @@
+---
+- name: join worker
+  shell: "{{ hostvars[groups['k8s_masters'][0]]['k8s_join_command'] }}"

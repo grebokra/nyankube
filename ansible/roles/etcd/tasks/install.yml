@@ -1,0 +1,26 @@
+---
+- name: install etcd
+  block:
+    - name: download etcd binaries
+      get_url:
+        url: "{{ etcd_download_url }}"
+        dest: "/tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+      register: result
+      until: result is succeeded
+
+    - name: untar etcd binaries
+      unarchive:
+        src: "/tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+        dest: /tmp/
+        remote_src: yes
+
+    - name: move etcd binaries to /usr/local/bin
+      copy:
+        src: "/tmp/etcd-{{ etcd_version }}-linux-amd64/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        remote_src: yes
+        mode: 0755
+      with_items:
+        - etcd
+        - etcdctl
+

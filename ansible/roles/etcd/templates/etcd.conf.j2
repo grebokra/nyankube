@@ -1,0 +1,23 @@
+#[Member]
+ETCD_NAME={{ etcd_member_name }}
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+ETCD_LISTEN_PEER_URLS="https://{{ etcd_member_ip }}:2380"
+ETCD_LISTEN_CLIENT_URLS="https://{{ etcd_member_ip }}:2379,https://127.0.0.1:2379"
+
+#[Cluster]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="https://{{ etcd_member_ip }}:2380"
+ETCD_INITIAL_CLUSTER="{{ etcd_member_name }}=https://{{ etcd_member_ip }}:2380"
+ETCD_INITIAL_CLUSTER_STATE="{{ etcd_initial_cluster_state }}"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"
+ETCD_ADVERTISE_CLIENT_URLS="https://{{ etcd_member_ip }}:2379"
+
+#[Security]
+ETCD_CERT_FILE="/etc/kubernetes/pki/etcd/server.crt"
+ETCD_KEY_FILE="/etc/kubernetes/pki/etcd/server.key"
+ETCD_TRUSTED_CA_FILE="/etc/kubernetes/pki/etcd/ca.crt"
+ETCD_CLIENT_CERT_AUTH="true"
+ETCD_PEER_CERT_FILE="/etc/kubernetes/pki/etcd/peer.crt"
+ETCD_PEER_KEY_FILE="/etc/kubernetes/pki/etcd/peer.key"
+ETCD_PEER_CLIENT_CERT_AUTH="true"
+ETCD_PEER_TRUSTED_CA_FILE="/etc/kubernetes/pki/etcd/ca.crt"
+

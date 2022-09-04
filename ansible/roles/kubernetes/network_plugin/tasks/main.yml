@@ -1,0 +1,9 @@
+---
+- name: include install.yml
+  include_tasks: install.yml
+
+# FIXME
+- name: apply flannel (cni)
+  delegate_to: "{{ groups['k8s_masters'][0] }}"
+  run_once: true
+  shell: "kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml"

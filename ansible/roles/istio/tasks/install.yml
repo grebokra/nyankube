@@ -1,0 +1,25 @@
+---
+- name: install istio
+  block:
+    - name: download istio
+      get_url:
+        url: "{{ istio_download_url }}"
+        dest: "/tmp/istio-{{ istio_version }}-linux-amd64.tar.gz"
+      register: result
+      until: result is succeeded
+
+    - name: untar istio binaries
+      unarchive:
+        src: "/tmp/istio-{{ istio_version }}-linux-amd64.tar.gz"
+        dest: /tmp/
+        remote_src: yes
+
+    - name: move istio binaries to /usr/local/bin
+      copy:
+        src: "/tmp/istio-{{ istio_version }}/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        remote_src: yes
+        mode: 0755
+      with_items:
+        - istioctl
+

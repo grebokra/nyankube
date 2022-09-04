@@ -1,0 +1,7 @@
+---
+- name: load sysctl system variables
+  raw: sysctl --system
+
+- name: reboot
+  ansible.builtin.reboot:
+

@@ -1,0 +1,33 @@
+---
+# This playbook is used to bootstrap a new nyankube cluster.
+#
+- hosts: k8s_fleet
+  become: yes
+  tasks:
+    - import_role:
+        name: kubernetes/common
+
+- hosts: k8s_masters
+  become: yes
+  tasks:
+    - import_role:
+        name: kubernetes/master
+
+- hosts: k8s_fleet
+  become: yes
+  tasks:
+    - import_role:
+        name: kubernetes/network_plugin
+
+- hosts: k8s_workers
+  become: yes
+  tasks:
+    - import_role:
+        name: kubernetes/worker
+
+#- hosts: k8s_fleet
+#  become: yes
+#  tasks:
+#    - import_role:
+#        name: istio
+

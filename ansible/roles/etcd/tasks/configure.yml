@@ -1,0 +1,29 @@
+---
+- name: configure etcd
+  block:
+    - name: place systemd service file
+      template:
+        src: etcd.service.j2
+        dest: /usr/lib/systemd/system/etcd.service
+
+    - name: systemd daemon reload
+      systemd:
+        daemon_reload: yes
+
+    - name: create etcd config dir
+      file:
+        path: /etc/etcd/
+        state: directory
+        mode: 0755
+
+    - name: place etcd config
+      template:
+        src: etcd.conf.j2
+        dest: /etc/etcd/etcd.conf
+
+#    - name: create etcd data dir
+#      file:
+#        path: /var/lib/etcd/
+#        state: directory
+#        mode: 0755
+

@@ -1,0 +1,24 @@
+---
+- name: include repos.yml
+  include_tasks: repos.yml
+  tags: repo-configure
+
+- name: include install.yml
+  include_tasks: install.yml
+  tags: package-install
+
+- name: include configure.yml
+  include_tasks: configure.yml
+  tags: package-configure
+
+- name: enable and start containerd
+  systemd:
+    name: containerd
+    state: started
+    enabled: yes
+
+- name: enable kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+
