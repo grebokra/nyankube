@@ -26,4 +26,3 @@
     exclude: "kubelet kubeadm kubectl"
   register: result
   until: result is succeeded
-

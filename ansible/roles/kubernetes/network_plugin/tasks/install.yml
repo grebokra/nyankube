@@ -12,4 +12,3 @@
         mode: "0700"
       register: result
       until: result is succeeded
-

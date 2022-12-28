@@ -4,4 +4,3 @@
 
 - name: include configure.yml
   include_tasks: configure.yml
-

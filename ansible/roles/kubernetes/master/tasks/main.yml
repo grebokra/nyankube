@@ -26,4 +26,3 @@
     src: /etc/kubernetes/admin.conf
     dest: /root/.kube/config
     remote_src: yes
-

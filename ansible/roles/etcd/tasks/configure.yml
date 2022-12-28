@@ -26,4 +26,3 @@
 #        path: /var/lib/etcd/
 #        state: directory
 #        mode: 0755
-

@@ -21,4 +21,3 @@
   systemd:
     name: kubelet
     enabled: yes
-
